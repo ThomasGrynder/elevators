@@ -11,6 +11,13 @@ public interface Elevator {
     enum Direction {
         UP, DOWN, NONE
     }
+    
+    /**
+     * Enumeration for describing elevator's events.
+     */
+    enum ElevatorEvent {
+        ELEVATOR_MOVED, ELEVATOR_RELEASED
+    }
 
     /**
      * Tells which direction is the elevator going in.
@@ -52,6 +59,10 @@ public interface Elevator {
      *
      * @return int actual floor at the moment.
      */
-    int currentFloor();
-
+    int getCurrentFloor();
+    
+    /**
+     * Command to immediately leave the elevator.
+     */
+    void release();
 }
