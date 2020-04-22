@@ -124,6 +124,15 @@
           }
         }
       }
-    }},
-  "defaultProject": "elevators"
+    }
+  },
+  "defaultProject": "elevators",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  },
+  "schematics": {
+    "@ngrx/schematics:component": {
+      "styleext": "scss"
+    }
+  }
 }
