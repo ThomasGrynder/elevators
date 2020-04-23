@@ -31,6 +31,11 @@ public final class ElevatorControllerEndPoints {
         return "pong";
     }
 
+    @GetMapping(value = "/elevators/events")
+    public Flux<ServerSentEvent<Elevator>> getElevatorsEvents() {
+        return elevatorController.eventStream();
+    }
+
     @PostMapping(value = "/elevators/{toFloor}")
     public Elevator requestElevator(@PathVariable int toFloor) {
         return elevatorController.requestElevator(toFloor);
@@ -45,10 +50,4 @@ public final class ElevatorControllerEndPoints {
     public void releaseElevator(@PathVariable int elevatorId) {
         elevatorController.releaseElevator(elevatorController.getElevator(elevatorId));
     }
-
-    @GetMapping(value = "/elevators/events")
-    public Flux<ServerSentEvent<Elevator>> getElevatorsEvents() {
-        return elevatorController.eventStream();
-    }
-
 }

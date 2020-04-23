@@ -1,14 +1,11 @@
 package com.fortum.codechallenge.elevators.backend.impl;
 
 import java.time.Duration;
-import java.time.LocalTime;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.springframework.http.codec.ServerSentEvent;
 
 import com.fortum.codechallenge.elevators.backend.api.Elevator;
-import com.google.common.eventbus.EventBus;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -20,19 +17,16 @@ public class ElevatorImpl implements Elevator {
     private int addressedFloor;
     private int currentFloor;
 
-    // TODO choose one of the following:
-    private EventBus eventBus;
     private FluxSink<ServerSentEvent<Elevator>> sink;
 
-    private ElevatorImpl(int elevatorId, double speedInFloorsPerSecond, EventBus eventBus, FluxSink<ServerSentEvent<Elevator>> sink) {
+    private ElevatorImpl(int elevatorId, double speedInFloorsPerSecond, FluxSink<ServerSentEvent<Elevator>> sink) {
         this.id = elevatorId;
         this.speedInFloorsPerSecond = speedInFloorsPerSecond;
-        this.eventBus = eventBus;
         this.sink = sink;
     }
 
-    static Elevator of(int elevatorId, double speedInFloorsPerSecond, EventBus eventBus, FluxSink<ServerSentEvent<Elevator>> sink) {
-        return new ElevatorImpl(elevatorId, speedInFloorsPerSecond, eventBus, sink);
+    static Elevator of(int elevatorId, double speedInFloorsPerSecond, FluxSink<ServerSentEvent<Elevator>> sink) {
+        return new ElevatorImpl(elevatorId, speedInFloorsPerSecond, sink);
     }
 
     @Override
@@ -76,7 +70,7 @@ public class ElevatorImpl implements Elevator {
 
     private void sendElevatorMovedEvent(ElevatorEvent eventType) {
         if (sink != null) {
-            sink.next(ServerSentEvent.builder((Elevator) this).id(UUID.randomUUID().toString()).event(eventType.toString()).build());
+            sink.next(ServerSentEvent.builder((Elevator) this).event(eventType.toString()).build());
         }
     }
 

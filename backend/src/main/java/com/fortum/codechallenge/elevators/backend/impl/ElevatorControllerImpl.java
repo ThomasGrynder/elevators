@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import com.fortum.codechallenge.elevators.backend.api.Elevator;
 import com.fortum.codechallenge.elevators.backend.api.ElevatorController;
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
@@ -36,16 +35,10 @@ public class ElevatorControllerImpl implements ElevatorController {
     private EmitterProcessor<ServerSentEvent<Elevator>> processor = EmitterProcessor.create();
     private FluxSink<ServerSentEvent<Elevator>> sink = processor.sink();
 
-    private EventBus eventBus;
-
-    public ElevatorControllerImpl(EventBus eventBus) {
-        this.eventBus = eventBus;
-    }
-
     @PostConstruct
     public void initElevators() {
         IntStream.range(0, numberOfElevators)
-                 .mapToObj(i -> ElevatorImpl.of(i, speedInFloorsPerSecond, eventBus, sink))
+                 .mapToObj(i -> ElevatorImpl.of(i, speedInFloorsPerSecond, sink))
                  .forEach(e -> elevatorsMap.put(e.getId(), e));
     }
 
@@ -56,7 +49,7 @@ public class ElevatorControllerImpl implements ElevatorController {
                                         .filter(e -> !e.isBusy())
                                         .sorted(Comparator.comparingInt(e -> Math.abs(toFloor - e.getCurrentFloor())))
                                         .findFirst()
-                                        .orElseThrow();
+                                        .orElseThrow(() -> new IllegalStateException("All elevators are busy"));
         elevator.moveElevator(toFloor);
         return elevator;
     }
@@ -67,7 +60,7 @@ public class ElevatorControllerImpl implements ElevatorController {
     }
 
     @Override
-    public void releaseElevator(Elevator elevator) {
+    public synchronized void releaseElevator(Elevator elevator) {
         elevator.release();
     }
 
