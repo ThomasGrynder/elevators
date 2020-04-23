@@ -1,10 +1,10 @@
-# Elevator Shaft
+# Elevator Shafts
 
-An elevator controller!
+The elevators controller!
 
 ## Backend
 
-Elevator Shaft symulator build on top of WebFlux (reactive stack with event loop concurrency model).
+Elevator Shafts symulator build on top of WebFlux (reactive stack with event loop concurrency model).
 
 ### Build And Run
 
@@ -22,7 +22,7 @@ or start the target JAR file
 
 ## Frontend
 
-Simple UI for Elevator Shaft service. Created with usage of Angular and NgRx Store. Start it, open in several browser tabs and play around.
+Simple UI for Elevator Shafts service. Created with usage of Angular and NgRx Store. Start it, open in several browser tabs and play around.
 
 ### Build And Run
 
