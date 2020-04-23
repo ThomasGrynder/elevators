@@ -9,13 +9,13 @@ import { environment } from '../../environments/environment';
 import { RouterReducerState, routerReducer } from '@ngrx/router-store';
 
 
-export interface State {
+export interface AppState {
   router: RouterReducerState;
 }
 
-export const reducers: ActionReducerMap<State> = {
+export const reducers: ActionReducerMap<AppState> = {
   router: routerReducer
 };
 
 
-export const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];
+export const metaReducers: MetaReducer<AppState>[] = !environment.production ? [] : [];

@@ -1,15 +1,37 @@
 import { createAction, props } from '@ngrx/store';
+import { Elevator } from '../models/elevator.model';
+
+export const evelatorFeatureKey = 'evelator';
 
 export const loadEvelators = createAction(
-  '[Evelator] Load Evelators'
+  `[${evelatorFeatureKey}] Load Evelators`
 );
 
 export const loadEvelatorsSuccess = createAction(
-  '[Evelator] Load Evelators Success',
-  props<{ data: any }>()
+  `[${evelatorFeatureKey}] Load Evelators Success`,
+  props<{ elevators: Elevator[] }>()
 );
 
 export const loadEvelatorsFailure = createAction(
-  '[Evelator] Load Evelators Failure',
-  props<{ error: any }>()
+  `[${evelatorFeatureKey}] Load Evelators Failure`,
+  (elevators = []) => ({ elevators })
+);
+
+export const elevatorMoved = createAction(
+  `[${evelatorFeatureKey}] Evelator Moved`,
+  props<{ elevator: Elevator }>()
+);
+
+export const requestElevator = createAction(
+  `[${evelatorFeatureKey}] Request Evelator`,
+  props<{ floorNumber: number }>()
+);
+
+export const requestElevatorSuccess = createAction(
+  `[${evelatorFeatureKey}] Request Evelator Success`,
+  props<{ elevator: Elevator }>()
+);
+
+export const requestElevatorFailure = createAction(
+  `[${evelatorFeatureKey}] Request Evelator Failure`
 );

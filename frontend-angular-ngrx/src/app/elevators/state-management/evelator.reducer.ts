@@ -1,25 +1,38 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import * as EvelatorActions from './evelator.actions';
+import { Elevator } from '../models/elevator.model';
 
-export const evelatorFeatureKey = 'evelator';
-
-export interface State {
-
+export interface ElevatorsState {
+  elevators: Elevator[];  // TODO {[id: number]: Elevator}
+  receivedElevatorId: number;
 }
 
-export const initialState: State = {
-
+export const elevatorsInitialState: ElevatorsState = {
+  elevators: [],
+  receivedElevatorId: null
 };
 
 const evelatorReducer = createReducer(
-  initialState,
-
-  on(EvelatorActions.loadEvelators, state => state),
-  on(EvelatorActions.loadEvelatorsSuccess, (state, action) => state),
-  on(EvelatorActions.loadEvelatorsFailure, (state, action) => state),
-
+  elevatorsInitialState,
+  on(EvelatorActions.loadEvelatorsSuccess, EvelatorActions.loadEvelatorsFailure, (state, { elevators }) => ({
+    ...state,
+    elevators
+  })),
+  on(EvelatorActions.elevatorMoved, (state, { elevator }) => ({
+    ...state,
+    elevators: state.elevators.map(e => {
+      if (e.id === elevator.id) {
+        return elevator;
+      }
+      return e;
+    })
+  })),
+  on(EvelatorActions.requestElevatorSuccess, (state, { elevator }) => ({
+    ...state,
+    receivedElevatorId: elevator.id
+  })),
 );
 
-export function reducer(state: State | undefined, action: Action) {
+export function reducer(state: ElevatorsState | undefined, action: Action) {
   return evelatorReducer(state, action);
 }

@@ -1,1 +1,13 @@
-<p>elevator works!</p>
+<div class="elevator-card card text-center m-5">
+  <div class="card-header">
+    #{{elevator.id + 1}}
+  </div>
+  <div class="card-body">
+    <h1>{{elevator.currentFloor}}</h1>
+    <!-- <button class="btn btn-sm btn-outline-warning">Release</button> -->
+    <h1 [ngSwitch]="elevator.direction">
+      <div *ngSwitchCase="'UP'">&#11205;</div>
+      <div *ngSwitchCase="'DOWN'">&#11206;</div>
+    </h1>
+  </div>
+</div>
